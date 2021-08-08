@@ -1,28 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SearchResultsTable from "./SearchResultsTable";
 import { Button, Container, Col, Label, Input, Row } from "reactstrap";
 import "./search.css";
 
 import { search } from "../../api";
 
-const Search = (props) => {
+const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [noResults, setNoResults] = useState(false);
 
   async function handleSearch() {
-    setIsSearching(true);
-    const results = await search(searchTerm);
-    setSearchResults(results);
-    console.log(results);
-    setSearchResults(results);
-    setIsSearching(false);
+    try {
+      setIsSearching(true);
+      const results = await search(searchTerm);
+      setNoResults(results.length == 0);
+      setSearchResults(results);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsSearching(false);
+    }
   }
 
   return (
     <Container>
-      <Row>
-        <Col sm="8">
+      <Row className="align-items-end">
+        <Col>
           <Label for="searchTerm">Search Term</Label>
           <Input
             type="text"
@@ -34,29 +39,33 @@ const Search = (props) => {
               e.preventDefault();
               setSearchTerm(e.target.value);
             }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && searchTerm) {
+                handleSearch();
+              }
+            }}
           />
         </Col>
-        <Col sm="4" className="align-bottom">
+        <Col>
           <Button
             className="align-bottom"
             type="button"
             color="primary"
             onClick={() => handleSearch()}
+            disabled={!searchTerm}
           >
             Search
           </Button>
         </Col>
       </Row>
-      {searchResults.length === 0 ? (
-        <div>no results</div>
-      ) : (
-        <Row>
-          <SearchResultsTable
-            results={searchResults}
-            isSearching={isSearching}
-          />
-        </Row>
-      )}
+      <Row>
+        <SearchResultsTable
+          results={searchResults}
+          isSearching={isSearching}
+          searchTerm={searchTerm}
+          noResults={noResults}
+        />
+      </Row>
     </Container>
   );
 };

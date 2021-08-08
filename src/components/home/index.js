@@ -1,8 +1,9 @@
+/* eslint-disable */
 import React from "react";
 
-const Home = (props) => {
+const Home = () => {
   return (
-    <div class="container">
+    <div className="container">
       <h3>Welcome WarnerMedia website evaluaters</h3>
       <p>
         I hope you don't mind I implemented the ui in react. I didn't want to

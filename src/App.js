@@ -1,6 +1,10 @@
+/* eslint-disable */
+import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Home from "./components/home";
 import Search from "./components/search";
+import Details from "./components/details";
+import NoMatch from "./components/404";
 import { Navbar, Nav, NavItem, NavbarBrand } from "reactstrap";
 
 function App() {
@@ -14,7 +18,7 @@ function App() {
               <Link to="/">Home</Link>
             </NavItem>
             <NavItem>
-              <Link to="/search">Search for Movies</Link>
+              <Link to="/search">Search for Titles</Link>
             </NavItem>
           </Nav>
         </Navbar>
@@ -24,6 +28,10 @@ function App() {
           </Route>
           <Route path="/search">
             <Search />
+          </Route>
+          <Route path="/details/:titleId" children={<Details />} />
+          <Route path="*">
+            <NoMatch />
           </Route>
         </Switch>
       </div>

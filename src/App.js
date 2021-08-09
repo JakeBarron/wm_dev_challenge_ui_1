@@ -5,6 +5,7 @@ import Home from "./components/home";
 import Search from "./components/search";
 import Details from "./components/details";
 import NoMatch from "./components/404";
+import Requirements from "./components/requirements";
 import { Navbar, Nav, NavItem, NavbarBrand } from "reactstrap";
 
 function App() {
@@ -20,6 +21,9 @@ function App() {
             <NavItem>
               <Link to="/search">Search for Titles</Link>
             </NavItem>
+            <NavItem>
+              <Link to="/requirements">Refresh on Requirements</Link>
+            </NavItem>
           </Nav>
         </Navbar>
         <Switch>
@@ -30,6 +34,9 @@ function App() {
             <Search />
           </Route>
           <Route path="/details/:titleId" children={<Details />} />
+          <Route path="/requirements">
+            <Requirements />
+          </Route>
           <Route path="*">
             <NoMatch />
           </Route>
